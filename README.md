@@ -9,3 +9,6 @@ source env/bin/activate
 # Creating adding .env
 printf "\n# Adding this command to read local .env file" >> env/bin/activate
 printf "\nexport \$(grep -v '^#' .env | xargs)" >> env/bin/activate
+
+# Installing requirements
+pip install -r requirements/base.txt
