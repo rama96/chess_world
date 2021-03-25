@@ -23,36 +23,54 @@ def evaluate(board):
     """ Function to evaluate a particular position based on just the difference in piece count """
     white_eval = CountMaterial(board, "White")
     black_eval = CountMaterial(board, "Black")
-    eval = white_eval - black_eval
+    evaluation = white_eval - black_eval
 
     if board.turn:
         sign = 1
     else:
         sign = -1
 
-    final_eval = eval * (sign)
+    final_eval = evaluation * (sign)
     return final_eval
 
 
 def search(board, depth ):
-    """ Function to Search for the best possible moves in the position """
-    global count_recursion
-    count_recursion = count_recursion + 1
-    print(count_recursion)
-    if depth == 0:
-        return evaluate(board)
+    """ Function to Search for the best possible moves in the position and returns the evaluation """
     
-    legal_moves = list(board.legal_moves)
-    moves = order_moves(legal_moves)
+    ## Update recursion to see the number of calls made
+    global count_recursion
+    count_recursion += 1
 
+    if depth == 0:
+        return evaluate(board) , None 
+    
+    ## Fetch possiblle legal moves
+    legal_moves = list(board.legal_moves)
+    moves = order_moves(legal_moves , board)
+
+    ## inital defn for the best evaluation
     max_eval = -1000
+    best_move = None
+    
+    ## inital defn for the best evaluation
     for move in moves :
+        
+        # Play the move on analysis board 
         analysis_board = board.copy()
         analysis_board.push_uci(move.uci())
-        evaluation = -search(analysis_board , depth - 1 )
-        max_eval = max(evaluation , max_eval)
+        
+        # Evaluate the move 
+        evaluation , calc_move = search(analysis_board , depth - 1 )
+        
+        # To implement min max  using sign change and correct evaluation metric
+        evaluation = -(evaluation)
+        
+        # Saving the best moves to output in the current position
+        if evaluation > max_eval :
+           max_eval = evaluation
+           best_move = move        
     
-    return max_eval
+    return max_eval , best_move
         
 def order_moves(moves , board):
     """Function to provide order to those moves to be analyzed for the alpha beta pruning which we plan to do in the future"""
@@ -65,7 +83,9 @@ if __name__ == "__main__":
     board = chess.Board()
     new_board = play_test_moves(board)
     print(new_board.turn)
-    print(search(new_board, depth = 4))
+    evaluation , best_move = search(new_board, depth = 3)
+    print("Final Evaluation :" , evaluation , " With best move as :" , best_move)
+    print(str(new_board))
     print("Number of moves Analyzed = " , count_recursion)
 
     
