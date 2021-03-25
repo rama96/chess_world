@@ -1,9 +1,8 @@
-import pandas as pd
-import numpy as np
 import chess
 from tests.test import play_test_moves
 from chess_utils.global_variables import count_recursion , pieces_points
-
+import time
+global count_recursion
 
 def CountMaterial(board, color):
     """ Function tht returns material count based on the values present in the global variables file"""
@@ -77,15 +76,63 @@ def order_moves(moves , board):
     ordered_moves = moves
     return ordered_moves
     
+def play_engine_moves(board , depth):
+    
+    global count_recursion
+    try:
+        while not board.is_game_over(claim_draw=True):
+            
+            # Printing color of the turn 
+            if board.turn:
+                print("White's Move to Play")
+            else :
+                print("Black's Move to Play")    
+            
+            
+            # Fetching the best engine move in the position
+            evaluation , best_move = search(board, depth = 3)
+            
+            # Output the evaluation and stats used to compute the same
+            
+            print("Final Evaluation :" , evaluation , " With best move as :" , new_board.san(best_move))
+            print(str(new_board))
+            print("Number of moves Analyzed = " , count_recursion)
+            
+            # Playing the engine move
+            board.push_uci(best_move.uci())
+            
+            count_recursion = 0
+
+    except KeyboardInterrupt:
+        
+        msg = "Game interrupted!"
+        return (None, msg, board)
+
+    result = None
+    
+    if board.is_checkmate():
+        msg = "checkmate: " + who(not board.turn) + " wins!"
+        result = not board.turn
+    elif board.is_stalemate():
+        msg = "draw: stalemate"
+    elif board.is_fivefold_repetition():
+        msg = "draw: 5-fold repetition"
+    elif board.is_insufficient_material():
+        msg = "draw: insufficient material"
+    elif board.can_claim_draw():
+        msg = "draw: claim"
+    if visual is not None:
+        print(msg)
+            
+
+
+
+
+
 
 if __name__ == "__main__":
 
     board = chess.Board()
     new_board = play_test_moves(board)
-    print(new_board.turn)
-    evaluation , best_move = search(new_board, depth = 3)
-    print("Final Evaluation :" , evaluation , " With best move as :" , best_move)
-    print(str(new_board))
-    print("Number of moves Analyzed = " , count_recursion)
-
     
+    play_engine_moves(new_board , 3)
