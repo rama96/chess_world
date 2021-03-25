@@ -5,3 +5,5 @@ chess
 tensorflow
 keras
 scikit-learn
+black
+stockfish
