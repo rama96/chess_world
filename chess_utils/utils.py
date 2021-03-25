@@ -6,7 +6,7 @@ from chess_utils.global_variables import count_recursion , pieces_points
 
 
 def CountMaterial(board, color):
-
+    """ Function tht returns material count based on the values present in the global variables file"""
     if color == "White":
         i = True
     else:
@@ -20,7 +20,7 @@ def CountMaterial(board, color):
 
 
 def evaluate(board):
-
+    """ Function to evaluate a particular position based on just the difference in piece count """
     white_eval = CountMaterial(board, "White")
     black_eval = CountMaterial(board, "Black")
     eval = white_eval - black_eval
@@ -35,7 +35,7 @@ def evaluate(board):
 
 
 def search(board, depth ):
- 
+    """ Function to Search for the best possible moves in the position """
     global count_recursion
     count_recursion = count_recursion + 1
     print(count_recursion)
