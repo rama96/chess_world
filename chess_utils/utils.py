@@ -1,8 +1,8 @@
 import chess
-from tests.test import play_test_moves
+from chess_tests.test import play_test_moves
 from chess_utils.global_variables import count_recursion , pieces_points
 import time
-global count_recursion
+from IPython.display import display, HTML, clear_output
 
 def CountMaterial(board, color):
     """ Function tht returns material count based on the values present in the global variables file"""
@@ -88,14 +88,15 @@ def play_engine_moves(board , depth):
             else :
                 print("Black's Move to Play")    
             
-            
+
             # Fetching the best engine move in the position
             evaluation , best_move = search(board, depth = 3)
             
             # Output the evaluation and stats used to compute the same
             
-            print("Final Evaluation :" , evaluation , " With best move as :" , new_board.san(best_move))
-            print(str(new_board))
+            
+            print("Final Evaluation :" , evaluation , " With best move as :" , board.san(best_move))
+            print(str(board))
             print("Number of moves Analyzed = " , count_recursion)
             
             # Playing the engine move
@@ -124,10 +125,67 @@ def play_engine_moves(board , depth):
     if visual is not None:
         print(msg)
             
+def play_engine_moves_with_display(board , depth):
+    
+    global count_recursion
+    try:
+        while not board.is_game_over(claim_draw=True):
+            
+            # Printing color of the turn 
+            if board.turn:
+                print("White's Move to Play")
+            else :
+                print("Black's Move to Play")    
+            
+            
+            # Fetching the best engine move in the position
+            evaluation , best_move = search(board, depth = 3)
+            
+            # Output the evaluation and stats used to compute the same
+            
+            print("Final Evaluation :" , evaluation , " With best move as :" , board.san(best_move))
+            #print(str(new_board))
+            
+            board_stop = board._repr_svg_()
+            
+            html = "<b>Move %s , Play '%s':</b><br/>%s" % (
+                       len(board.move_stack), board.san(best_move), board_stop)
+            
+            visual = "svg"
+            if visual is not None:
+                if visual == "svg":
+                    clear_output(wait=True)
+                display(HTML(html))
+                if visual == "svg":
+                    time.sleep(0.1)
+            print("Number of moves Analyzed = " , count_recursion)
+            
+            # Playing the engine move
+            board.push_uci(best_move.uci())
+            
+            count_recursion = 0
 
+    except KeyboardInterrupt:
+        
+        msg = "Game interrupted!"
+        return (None, msg, board)
 
-
-
+    result = None
+    
+    if board.is_checkmate():
+        msg = "checkmate: " + who(not board.turn) + " wins!"
+        result = not board.turn
+    elif board.is_stalemate():
+        msg = "draw: stalemate"
+    elif board.is_fivefold_repetition():
+        msg = "draw: 5-fold repetition"
+    elif board.is_insufficient_material():
+        msg = "draw: insufficient material"
+    elif board.can_claim_draw():
+        msg = "draw: claim"
+    if visual is not None:
+        print(msg)
+            
 
 
 if __name__ == "__main__":
