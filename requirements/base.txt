@@ -7,3 +7,4 @@ keras
 scikit-learn
 black
 stockfish
+flask
