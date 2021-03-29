@@ -1,5 +1,6 @@
-from flask import Flask , redirect , url_for , requests
+from flask import Flask , redirect , url_for , request , render_template
 app = Flask(__name__)
+import pathlib
 
 ## Learning Flask Module 1 
 
@@ -25,13 +26,14 @@ def hello_user(name):
 # PUT - Replaces all current represenations of target resource witb uploaded content
 # DELETE - Removes all current representations to target resource given by URL   
 
+# Takes input from login.html and redirects the webpage to success(name)
 
 @app.route('/success/<name>')
 def success(name):
     return 'welcome %s' % name 
 
-@app.route('/login',method = ['POST','GET'])
-def success(name):
+@app.route('/login',methods = ['POST','GET'])
+def login():
     if request.method == 'POST':
         user = request.form['nm']
         return redirect(url_for('success',name = user))
@@ -39,6 +41,12 @@ def success(name):
         user = request.args.get('nm')
         return redirect(url_for('success',name = user))
 
+
+# uses Jinga2 template engine and takes input from hello.html for template purposes
+
+@app.route('/hello/<user>')
+def hello_name(user):
+    return render_template('../flask_templates/hello.html' , name = user )
 
 if __name__ == "__main__":
     app.run(debug = True)
