@@ -16,6 +16,15 @@ def hello_user(name):
         # Rediects to admin  url with user argument
         return redirect(url_for('hello_admin' , name = 'krishna'))
 
+@app.route('/')
+def welcome_page():
+    return "Welcome Ramamurthi Gopalakrishnan"
+
+@app.route('/display_chess_board')
+def chess_board():
+    return render_template('chess.html')
+
+    
 
 
 ## Flask - Http Methods 
