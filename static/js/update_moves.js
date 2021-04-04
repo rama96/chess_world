@@ -1,30 +1,4 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>Chess</title>
-    
-    <!-- jquery dependency -->
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"> </script>
-    
-    <!-- chessjs script-->
-    <script src="{{ url_for('static', filename='js/chess.js') }}"></script>
-    
-    
-    <!-- chess widget-->
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/chessboard-1.0.0.min.css') }}">
-    <script src="{{ url_for('static', filename='js/chessboard-1.0.0.min.js') }}"></script>
-    
-    
-  
-  </head>
-  <body>
-    <div id="chess_board" style="width: 400px"></div>
-  </body>
-</html>
-
-<!-- Script to update moves-->
-<script>   
-// NOTE: this example uses the chess.js library:
+  // NOTE: this example uses the chess.js library:
   // https://github.com/jhlywa/chess.js
 
   var board = null
@@ -107,5 +81,3 @@
   board = Chessboard('chess_board', config)
 
   updateStatus()
-  
-  </script>
