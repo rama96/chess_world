@@ -24,6 +24,9 @@ def welcome_page():
 def chess_board():
     return render_template('chess.html')
 
+@app.route('/chess_dev')
+def chess_board_dev():
+    return render_template('chess_dev.html')
     
 
 
