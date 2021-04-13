@@ -2,7 +2,7 @@ import chess
 import pandas as pd
 import numpy as np
 from chess_world.chess_utils.chess_players import ChessPlayer
-
+import time 
 def play_test_moves(board):
 
     board.push_uci("e2e4")
@@ -38,4 +38,8 @@ if __name__ == "__main__":
     board = chess.Board()
     play_test_moves_san(board)
     Board1 = ChessPlayer(board)
+    Board1.make_move("h6")
+    print("Prinitng New Board -- ")
+    time.sleep(2)
+    print(Board1.get_board())
     

@@ -2,6 +2,7 @@ import chess
 import pandas as pd
 import numpy as np
 from chess_world.chess_utils.global_variables import sample_board
+import traceback
 
 class ChessPlayer:
     """ A class that has the chessboard stored and moves along with it """
@@ -29,10 +30,21 @@ class ChessPlayer:
         """ Function to make a move on the board """
         
         # Maybe Check for Invalid / Illegal Moves ??
+        board = self.__current_board
+        print("Printing the current board :: ")
+        print(board)
+        #self.__current_board = board.push_san(move)
+        
         try :
-            self.__current_board = board.push_san(move)
-        except exception :
-            print("The Following Error Occured Whil;e Making the provided Move : " , str(Exception))
+            board.push_san(move)
+            self.__current_board = board
+        
+        except Exception :
+            traceback.print_exc()
+
+            # print("The Following Error Occured While Making the provided Move : " , str(Exception))
+            # print(str(Exception.__class__)) 
+            # print(str(Exception)) 
     
     def reset_board(self):
         """ Resets the Board to the original Board Position """
