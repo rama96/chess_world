@@ -8,8 +8,8 @@ class ChessPlayer:
     """ A class that has the chessboard stored and moves along with it """
     
     def __init__(self,board = sample_board , color = "White"):
-        self.__initial_position = board
-        self.__current_board = board
+        self.__initial_position = board.copy()
+        self.__current_board = board.copy()
         self.__moves_played = []
         #self.color = color
         
@@ -42,10 +42,6 @@ class ChessPlayer:
         except Exception :
             traceback.print_exc()
 
-            # print("The Following Error Occured While Making the provided Move : " , str(Exception))
-            # print(str(Exception.__class__)) 
-            # print(str(Exception)) 
-    
     def reset_board(self):
         """ Resets the Board to the original Board Position """
         self.__current_board = self.__initial_position

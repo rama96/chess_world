@@ -3,6 +3,7 @@ import pandas as pd
 import numpy as np
 from chess_world.chess_utils.chess_players import ChessPlayer
 import time 
+
 def play_test_moves(board):
 
     board.push_uci("e2e4")
@@ -34,12 +35,25 @@ def play_test_moves_san(board):
     return board
 
 
+
 if __name__ == "__main__":
+    
+    print("*"*25,"Test 1 : Making Moves from a random position" ,"*"*25)
     board = chess.Board()
     play_test_moves_san(board)
     Board1 = ChessPlayer(board)
     Board1.make_move("h6")
     print("Prinitng New Board -- ")
-    time.sleep(2)
     print(Board1.get_board())
+    print("*"*50)
+    
+    
+    print("*"*25,"Test 2 : Without giving any args" ,"*"*25)
+    Board2 = ChessPlayer()
+    print(Board2.get_board())
+    Board2.make_move("e4")
+    Board2.make_move("e5")
+    print(Board2.get_board())
+    Board2.reset_board()
+    print(Board2.get_board())
     
