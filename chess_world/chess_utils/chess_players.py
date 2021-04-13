@@ -24,7 +24,7 @@ class ChessPlayer:
         
     def is_turn(self):
         """ Returns True/False based on which color to move """
-        return self.__current_board.turn == self.color
+        return self.__current_board.turn 
     
     def make_move(self , move):
         """ Function to make a move on the board """
@@ -47,5 +47,11 @@ class ChessPlayer:
         self.__current_board = self.__initial_position
         self.__moves_played = []
     
-    
-    
+    def get_legal_moves(self):
+        """ Resets the Board to the original Board Position """
+        legal_moves_uci = list(self.__current_board.legal_moves) 
+        legal_moves_san = []
+        for move in legal_moves_uci:
+            move_san = self.__current_board.san(move)
+            legal_moves_san.append(move_san)
+        return legal_moves_san

@@ -57,3 +57,13 @@ if __name__ == "__main__":
     Board2.reset_board()
     print(Board2.get_board())
     
+    print("*"*25,"Test 3 : Without giving any args" ,"*"*25)
+    Board2 = ChessPlayer()
+    print(Board2.get_board())
+    Board2.make_move("e4")
+    Board2.make_move("e5")
+    Board2.make_move("Nf3")
+    print(Board2.is_turn())
+    
+    print("*"*25,"Test 4 : Legal Moves " ,"*"*25)
+    print(Board2.legal_moves())
