@@ -12,3 +12,5 @@ pieces_points = {
     chess.ROOK: 5,
     chess.QUEEN: 9,
 }
+
+sample_board = chess.Board()
