@@ -62,3 +62,7 @@ class ChessPlayer:
         legal_moves = self.get_legal_moves()
         if len(legal_moves) == 0 :
             print("Game Over No legal Moves Present ")
+            return 0
+        else:
+            return 1
+        
