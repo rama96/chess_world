@@ -22,7 +22,7 @@ class ChessPlayer:
         self.__current_board = board
         self.__moves_played = []
         
-    def is_turn(self):
+    def get_turn(self):
         """ Returns True/False based on which color to move """
         return self.__current_board.turn 
     
@@ -55,3 +55,10 @@ class ChessPlayer:
             move_san = self.__current_board.san(move)
             legal_moves_san.append(move_san)
         return legal_moves_san
+
+    def is_game_over(self):
+        """ Function that returns boolean values for if game is over """
+        # Work to be done
+        legal_moves = self.get_legal_moves()
+        if len(legal_moves) == 0 :
+            print("Game Over No legal Moves Present ")

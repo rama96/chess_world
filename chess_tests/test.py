@@ -63,7 +63,7 @@ if __name__ == "__main__":
     Board2.make_move("e4")
     Board2.make_move("e5")
     Board2.make_move("Nf3")
-    print(Board2.is_turn())
+    print(Board2.get_turn())
     
     print("*"*25,"Test 4 : Legal Moves " ,"*"*25)
     print(Board2.legal_moves())
