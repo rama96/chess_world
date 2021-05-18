@@ -40,6 +40,7 @@ class ChessPlayer:
             self.__current_board = board
         
         except Exception :
+            print("Error Occured")
             traceback.print_exc()
 
     def reset_board(self):
