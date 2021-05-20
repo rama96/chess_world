@@ -10,7 +10,7 @@ import traceback
 import time
 import collections
 import json
-from gevent.pywsgi import WSGIServer
+#from gevent.pywsgi import WSGIServer
 
 
 class Player(object):
@@ -117,6 +117,7 @@ class Player2(Player):
             self.__engine = chess.engine.SimpleEngine.popen_uci("/usr/bin/stockfish")
             return True
         except Exception:
+            raise ValueError("StockFish not found in the location . Please try again ")
             return False
 
 
@@ -179,8 +180,8 @@ def run_game():
     global undo_moves_stack
     undo_moves_stack = []
     board = chess.Board()
-    Human  = Player1(board)
-    #engine = Player2(board)
+    Human1  = Player1(board)
+    Human2 = Player2(board)
     #engine.init_stockfish()
 
     app = Flask(__name__, static_url_path='')
@@ -199,17 +200,16 @@ def run_game():
             print("Move from the User is :" , move_san)
             if move_san is not None and move_san != '':
                 try:
-                    if Human.is_turn():
+                    if Human1.is_turn():
                         print("White's turn to play:")
                     else:
                         print("Black's turn to play")
-                    if Human.is_turn():
-                        board = Human.make_move(str(move_san))
+                    if Human1.is_turn():
+                        board = Human1.make_move(str(move_san))
                         undo_moves_stack = [] #make undo moves stack empty if any move is done.
                     else :
-                        legal_moves = list(board.legal_moves)
-                        selected_move = legal_moves[0]
-                        board = Human.make_move(str(selected_move))
+                        board = Human2.make_move(str(move_san))
+                        undo_moves_stack = [] #make undo moves stack empty if any move is done.
                     print(board)
                 except Exception:
                     traceback.print_exc()
@@ -240,11 +240,11 @@ def run_game():
     @app.route("/reset", methods=["GET"])
     def reset():
         global board
-        Human.reset()
-        engine.reset()
+        Human1.reset()
+        Human2.reset()
         board = chess.Board()
-        Human.set_board(board)
-        engine.set_board(board)
+        Human1.set_board(board)
+        Human2.set_board(board)
 
         resp = {"fen": board.board_fen(), 'pgn': str(board_to_game(board).mainline_moves())}
         response = app.response_class(
@@ -296,7 +296,6 @@ def run_game():
 
     #http_server = WSGIServer(('0.0.0.0', 1337), app)
     #http_server.serve_forever()
-
     app.run(debug=True)
 
 

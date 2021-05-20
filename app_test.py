@@ -6,10 +6,8 @@ import chess
 
 board = chess.Board()
 board.push_san("e4")
-board.push_san("e5")
 
-app = Flask(__name__,static_url_path='')
-
+app = Flask(__name__)
 
 @app.route('/chess_board')
 def chess_board():
@@ -17,46 +15,28 @@ def chess_board():
     #return render_template('chess_dev.html',fen=board.board_fen())
     global board
     print(board)
-    return render_template('chess_dev.html',fen=board.board_fen())
+    return render_template('index.html')
 
 @app.route('/')
 def welcome_page():
     #print(board)
     #return render_template('chess_dev.html',fen=board.board_fen())
-    print("Welcome Chess ")
-    return render_template('index.html',fen=board.board_fen())
-
-@app.route('/v2')
-def welcome_page2():
-    #print(board)
-    #return render_template('chess_dev.html',fen=board.board_fen())
-    print("Welcome Chess ")
-    return render_template('index_2.html',fen=board.board_fen())
+    return "HEllo"
 
 @app.route('/move', methods=['GET'])
 def move():
     #print(board)
     #return render_template('chess_dev.html',fen=board.board_fen())
     global board
-    print("Getting input from user")
-    move_str = request.args.get('move',default = '')
-    
-    move_uci = chess.Move.from_uci(move_str)
-    move_san = board.san(move_uci)
-    
-    print(move_uci)
-    print(move_san)
+    move_san = request.args.get('move',default = '')
     print(board)
     if board.turn == True :
-        print("White to move ")        
-        board.push(move_uci)
+        board = board.make_move(move_san)
     else :
-        print("black to move")        
-        board.push(move_uci)
-    
-    print(board)
-    
-    resp = {'fen':board.board_fen()}
+        print("Make a move -- ")        
+        move = input()
+        board = board.make_move(move_san)
+    resp = {'fen':board.FEN }
 
     response = app.response_class(
         response = json.dumps(resp),
