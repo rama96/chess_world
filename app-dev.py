@@ -5,8 +5,6 @@ import json
 import chess
 
 board = chess.Board()
-board.push_san("e4")
-board.push_san("e5")
 
 app = Flask(__name__,static_url_path='')
 
@@ -33,6 +31,13 @@ def welcome_page2():
     print("Welcome Chess ")
     return render_template('index_2.html',fen=board.board_fen())
 
+@app.route('/v3')
+def welcome_page3():
+    #print(board)
+    #return render_template('chess_dev.html',fen=board.board_fen())
+    print("Welcome Chess ")
+    return render_template('index_3.html',fen=board.board_fen())
+
 @app.route('/move', methods=['GET'])
 def move():
     #print(board)
@@ -40,12 +45,12 @@ def move():
     global board
     print("Getting input from user")
     move_str = request.args.get('move',default = '')
-    
+    print("Input from user : " , move_str)
     move_uci = chess.Move.from_uci(move_str)
-    move_san = board.san(move_uci)
+    #move_san = board.san(move_uci)
     
     print(move_uci)
-    print(move_san)
+    #print(move_san)
     print(board)
     if board.turn == True :
         print("White to move ")        
